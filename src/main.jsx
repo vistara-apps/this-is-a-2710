@@ -1,38 +1,31 @@
-import '@rainbow-me/rainbowkit/styles.css';
-import {
-  getDefaultConfig,
-  RainbowKitProvider,
-} from '@rainbow-me/rainbowkit';
-import { WagmiProvider } from 'wagmi';
-import {
-  mainnet,
-  polygon,
-  optimism,
-  arbitrum,
-  base,
-} from 'wagmi/chains';
-import {
-  QueryClientProvider,
-  QueryClient,
-} from "@tanstack/react-query";
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
+import { PrivyProvider } from './contexts/PrivyContext';
+import { UserProvider } from './contexts/UserContext';
+import { CreatorProvider } from './contexts/CreatorContext';
+import { TipProvider } from './contexts/TipContext';
+import { NotificationProvider } from './contexts/NotificationContext';
+import App from './App.jsx';
+import './index.css';
 
-import React from 'react'
-import ReactDOM from 'react-dom/client'
-import App from './App.jsx'
-import './index.css'
+// Create a client for React Query
+const queryClient = new QueryClient();
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    <WagmiProvider config={getDefaultConfig({
-      appName: "Base Tipper",
-      projectId: "9f4bd472c01ba49282b42e5e1874c2af",
-      chains: [mainnet, polygon, optimism, arbitrum, base],
-    })}>
-      <QueryClientProvider client={new QueryClient()}>
-        <RainbowKitProvider>
-          <App />
-        </RainbowKitProvider>
-      </QueryClientProvider>
-    </WagmiProvider>
+    <QueryClientProvider client={queryClient}>
+      <PrivyProvider>
+        <UserProvider>
+          <CreatorProvider>
+            <TipProvider>
+              <NotificationProvider>
+                <App />
+              </NotificationProvider>
+            </TipProvider>
+          </CreatorProvider>
+        </UserProvider>
+      </PrivyProvider>
+    </QueryClientProvider>
   </React.StrictMode>,
 )

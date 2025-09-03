@@ -1,13 +1,27 @@
 import React from 'react';
-import { Home, Users, User, Settings } from 'lucide-react';
+import { Home, Users, User, Settings, Wallet, LogOut } from 'lucide-react';
 
-const AppShell = ({ children, currentView, onViewChange, isConnected }) => {
+const AppShell = ({ 
+  children, 
+  currentView, 
+  onViewChange, 
+  isAuthenticated,
+  onLogin,
+  onLogout
+}) => {
+  // Define navigation items
   const navigation = [
     { id: 'dashboard', label: 'Dashboard', icon: Home },
     { id: 'creators', label: 'Creators', icon: Users },
-    { id: 'profile', label: 'Profile', icon: User },
-    { id: 'settings', label: 'Settings', icon: Settings },
   ];
+  
+  // Add authenticated-only navigation items
+  if (isAuthenticated) {
+    navigation.push(
+      { id: 'profile', label: 'Profile', icon: User },
+      { id: 'settings', label: 'Settings', icon: Settings }
+    );
+  }
 
   return (
     <div className="min-h-screen bg-bg">
@@ -69,6 +83,27 @@ const AppShell = ({ children, currentView, onViewChange, isConnected }) => {
                   </button>
                 );
               })}
+              
+              {/* Wallet Connection Button */}
+              <div className="pt-4 mt-4 border-t border-gray-200">
+                {isAuthenticated ? (
+                  <button
+                    onClick={onLogout}
+                    className="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-left transition-colors text-red-600 hover:bg-red-50"
+                  >
+                    <LogOut className="w-5 h-5" />
+                    <span className="text-body">Disconnect Wallet</span>
+                  </button>
+                ) : (
+                  <button
+                    onClick={onLogin}
+                    className="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-left transition-colors bg-primary text-white hover:bg-primary/90"
+                  >
+                    <Wallet className="w-5 h-5" />
+                    <span className="text-body">Connect Wallet</span>
+                  </button>
+                )}
+              </div>
             </nav>
           </div>
         </div>
