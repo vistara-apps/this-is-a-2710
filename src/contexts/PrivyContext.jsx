@@ -1,9 +1,9 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { PrivyAuthProvider } from '@privy-io/react-auth';
 import { PrivyWagmiConnector } from '@privy-io/wagmi-connector';
-import { createConfig } from 'wagmi';
+import { createConfig, configureChains } from 'wagmi';
 import { base } from 'wagmi/chains';
-import { http } from 'wagmi/transport';
+import { publicProvider } from 'wagmi/providers/public';
 import { PRIVY_APP_ID } from '../constants/api';
 
 // Create context
@@ -17,11 +17,15 @@ export const PrivyProvider = ({ children }) => {
   const [error, setError] = useState(null);
 
   // Wagmi configuration
+  const { chains, provider, webSocketProvider } = configureChains(
+    [base],
+    [publicProvider()]
+  );
+  
   const wagmiConfig = createConfig({
-    chains: [base],
-    transports: {
-      [base.id]: http(),
-    },
+    autoConnect: true,
+    provider,
+    webSocketProvider,
   });
 
   // Handle login state change
@@ -128,4 +132,3 @@ export const usePrivy = () => {
   }
   return context;
 };
-
