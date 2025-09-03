@@ -1,0 +1,29 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    background-color: hsl(220 15% 95%);
+    color: hsl(220 15% 20%);
+  }
+}
+
+@layer components {
+  .text-display {
+    @apply text-3xl font-bold;
+  }
+  
+  .text-heading {
+    @apply text-xl font-semibold;
+  }
+  
+  .text-body {
+    @apply text-base leading-relaxed;
+  }
+  
+  .text-caption {
+    @apply text-sm;
+    color: hsl(220 15% 50%);
+  }
+}
